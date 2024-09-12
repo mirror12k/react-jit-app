@@ -1,30 +1,36 @@
 // src/InputComponent.js
 import React, { useState } from 'react';
 import * as Babel from '@babel/standalone';
-import { Box, Button, TextField, Typography, Alert } from '@mui/material';
+import { Box, Button, Typography, Alert } from '@mui/material';
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { oneDark } from '@codemirror/theme-one-dark';
 
 const InputComponent = ({ onCompile }) => {
   const [input, setInput] = useState(`
-    return (props) => {
-      const [state, setState] = useState('Initial state');
+return () => {
+  const [state, setState] = useState('Initial state');
+  const [clickCount, setclickCount] = useState(0);
 
-      const handleClick = () => {
-        setState('State changed by dynamic logic');
-      };
+  const handleClick = () => {
+    setState('State changed by dynamic logic');
+    setclickCount(1 + clickCount);
+  };
 
-      return (
-        <div>
-          <h1>Hello world!</h1>
-          <p>{state}</p>
-          <button onClick={handleClick}>Change State</button>
-        </div>
-      );
-    };
-  `);
+  return (
+    <div>
+      <h1>Hello world!</h1>
+      <p>{state}</p>
+      <p>Clicked {clickCount} times!</p>
+      <button onClick={handleClick}>Change State</button>
+    </div>
+  );
+};
+`);
   const [error, setError] = useState(null);
 
-  const handleChange = (event) => {
-    setInput(event.target.value);
+  const handleChange = (value) => {
+    setInput(value);
   };
 
   const handleCompile = () => {
@@ -52,14 +58,16 @@ const InputComponent = ({ onCompile }) => {
       <Typography variant="h5" gutterBottom>
         Dynamic JSX Compiler
       </Typography>
-      <TextField
+      <CodeMirror
         value={input}
-        onChange={handleChange}
-        placeholder="Enter JSX here..."
-        multiline
-        rows={10}
-        variant="outlined"
-        fullWidth
+        extensions={[javascript()]}
+        theme={oneDark}
+        onChange={(value) => handleChange(value)}
+        options={{
+          lineNumbers: true,
+          tabSize: 2,
+          mode: 'jsx',
+        }}
       />
       <Button variant="contained" color="primary" onClick={handleCompile} sx={{ marginTop: 2 }}>
         Compile JSX
