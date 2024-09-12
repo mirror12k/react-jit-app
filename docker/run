@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+docker build -t "react-jit-app" docker
+docker run -it --rm --cap-drop=ALL -p 3000:3000 -v "$PWD:/app" -v "$PWD/docker:/app/docker:ro" --env-file="docker/.env" --name running-react-jit-app "react-jit-app"
