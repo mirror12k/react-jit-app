@@ -1,6 +1,7 @@
 // src/InputComponent.js
 import React, { useState } from 'react';
 import * as Babel from '@babel/standalone';
+import { Box, Button, TextField, Typography, Alert } from '@mui/material';
 
 const InputComponent = ({ onCompile }) => {
   const [input, setInput] = useState(`
@@ -28,7 +29,6 @@ const InputComponent = ({ onCompile }) => {
 
   const handleCompile = () => {
     try {
-      // Transpile the JSX into JavaScript
       const transformedCode = Babel.transform(
         `
 (function(React, useState) {
@@ -38,10 +38,8 @@ const InputComponent = ({ onCompile }) => {
         { presets: ['react'] }
       ).code;
 
-      // Evaluate the transformed JavaScript code and get the component
       const dynamicComponent = eval(transformedCode);
 
-      // Call the callback function to pass the compiled component
       onCompile(dynamicComponent);
       setError(null);
     } catch (err) {
@@ -50,19 +48,28 @@ const InputComponent = ({ onCompile }) => {
   };
 
   return (
-    <div>
-      <h1>Dynamic JSX Compiler with Logic</h1>
-      <textarea
+    <Box sx={{ padding: 2, border: '1px solid #ccc', borderRadius: '8px', marginTop: 2 }}>
+      <Typography variant="h5" gutterBottom>
+        Dynamic JSX Compiler
+      </Typography>
+      <TextField
         value={input}
         onChange={handleChange}
         placeholder="Enter JSX here..."
-        rows="10"
-        cols="50"
+        multiline
+        rows={10}
+        variant="outlined"
+        fullWidth
       />
-      <br />
-      <button onClick={handleCompile}>Compile JSX</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+      <Button variant="contained" color="primary" onClick={handleCompile} sx={{ marginTop: 2 }}>
+        Compile JSX
+      </Button>
+      {error && (
+        <Alert severity="error" sx={{ marginTop: 2 }}>
+          {error}
+        </Alert>
+      )}
+    </Box>
   );
 };
 

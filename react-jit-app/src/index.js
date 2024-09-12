@@ -1,24 +1,26 @@
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import DynamicComponent from './DynamicComponent';
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <DynamicComponent />
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
-
-
-
-// import React from 'react';
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <DynamicComponent />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <DynamicComponent />
+    </ThemeProvider>
   </React.StrictMode>
 );
-
-

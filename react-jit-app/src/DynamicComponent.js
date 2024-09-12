@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import InputComponent from './InputComponent';
 import DynamicRenderer from './DynamicRenderer';
+import { Container } from '@mui/material';
 
 const DynamicComponent = () => {
   const [compiledComponent, setCompiledComponent] = useState(null);
@@ -11,10 +12,10 @@ const DynamicComponent = () => {
   };
 
   return (
-    <div>
+    <Container>
       <InputComponent onCompile={handleCompile} />
       <DynamicRenderer compiledComponent={compiledComponent} />
-    </div>
+    </Container>
   );
 };
 
